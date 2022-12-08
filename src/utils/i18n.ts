@@ -13,7 +13,7 @@ interface Resources {
 }
 const resources: Resources = {}
 
-for (const path of glob("locales")) {
+for (const path of glob("locales/**/*.yaml")) {
     const data = YAML.parse(fs.readFileSync(path, "utf-8"))
     const keys = path
         .replace("locales/", "")
@@ -26,6 +26,7 @@ for (const lang in resources)
 
 export const i18n = i18next.createInstance({
     fallbackLng: "ru",
+    defaultNS: "tr",
     interpolation: {
         nestingPrefix: "%{",
         nestingSuffix: "}",
