@@ -27,6 +27,7 @@ for (const lang in resources)
 export const i18n = i18next.createInstance({
     fallbackLng: "ru",
     defaultNS: "tr",
+    initImmediate: false,
     interpolation: {
         nestingPrefix: "%{",
         nestingSuffix: "}",
@@ -35,3 +36,4 @@ export const i18n = i18next.createInstance({
     },
     resources
 })
+i18n.init()
