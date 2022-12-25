@@ -1,11 +1,22 @@
-import { BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { User as TelegramUser } from "grammy/out/types"
 
 @Entity()
 export class User extends BaseEntity {
-    @PrimaryGeneratedColumn("rowid")
+    constructor(user?: TelegramUser) {
+        super()
+        if (!user)
+            return
+        this.id = user.id
+        this.name = user.first_name
+        this.username = user.username
+        this.language_code = user.language_code ?? "ru"
+    }
+
+    @PrimaryGeneratedColumn()
     rowid: number
 
-    @PrimaryColumn()
+    @Column({ unique: true })
     id: number
 
     @Column()
@@ -13,4 +24,7 @@ export class User extends BaseEntity {
 
     @Column({ unique: true, nullable: true })
     username?: string
+
+    @Column()
+    language_code: string
 }

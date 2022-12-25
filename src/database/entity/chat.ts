@@ -1,12 +1,26 @@
-import { BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Chat as TelegramChat } from "grammy/out/types"
 
 @Entity()
 export class Chat extends BaseEntity {
-    @PrimaryGeneratedColumn("rowid")
+    constructor(chat?: TelegramChat) {
+        super()
+        if (!chat)
+            return
+        this.id = chat.id
+        this.type = chat.type
+        this.name = "title" in chat ? chat.title : chat.first_name
+        this.username = "username" in chat ? chat.username : undefined
+    }
+
+    @PrimaryGeneratedColumn()
     rowid: number
 
-    @PrimaryColumn()
+    @Column({ unique: true })
     id: number
+
+    @Column()
+    type: "private" | "group" | "supergroup" | "channel"
 
     @Column()
     name: string
