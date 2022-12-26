@@ -1,62 +1,73 @@
 import { comp } from "./composer"
-import { SessionData } from "types/session"
 import { Chat } from "database/entity/chat"
 import { User } from "database/entity/user"
 import { Chat as TelegramChat, User as TelegramUser } from "grammy/out/types"
 
 comp.use(async (ctx, next) => {
-    await updateSession(ctx.from, ctx.chat)
-    if (ctx.msg.reply_to_message?.from)
-        await updateSession(ctx.msg.reply_to_message.from)
+    const chat = await getChat(ctx.chat.id)
+    const user = await getUser(ctx.from.id)
     ctx.session = {
-        get: getSession,
-        create: createSession,
-        ...(
-            await getSession(ctx.from.id, ctx.chat.id) ??
-            await createSession(ctx.from, ctx.chat)
-        )
+        ...await saveChatUser(chat, user, ctx.chat, ctx.from),
+        async get(user_id, chat_id) {
+            const user = await getUser(user_id)
+            if (!user)
+                return null
+            if (!chat_id)
+                return { user }
+            const chat = await getChat(user_id) ?? undefined
+            return { chat, user }
+        }
     }
     await next()
 })
 
-async function getSession(user_id: number, chat_id?: number): Promise<SessionData | null> {
-    const user = await User.findOne({
-        where: { id: user_id }
-    })
-    if (!user)
-        return null
-    if (!chat_id)
-        return { user }
-    const chat = await Chat.findOne({
-        where: { id: chat_id }
-    })
-    return { chat: chat ?? undefined, user }
+async function saveChatUser(chat: Chat | null, user: User | null, tgChat: TelegramChat, tgUser: TelegramUser) {
+    const upChat = new Chat(tgChat)
+    if (chat) {
+        chat.type = upChat.type
+        chat.name = upChat.name
+        chat.username = upChat.username
+    } else {
+        chat = upChat
+    }
+    chat.users ??= []
+    const upUser = new User(tgUser)
+    if (user) {
+        user.name = upUser.name
+        user.username = upUser.username
+        user.language_code = upUser.language_code
+    } else {
+        user = upUser
+    }
+    user.chats ??= []
+
+    if (chat.users.every(inUser => inUser.id != user!.id))
+        chat.users.push(user)
+    if (user.chats.every(inChat => inChat.id != chat!.id))
+        user.chats.push(chat)
+
+    console.log(chat, user)
+    return {
+        chat: await chat.save(),
+        user: await user.save()
+    }
 }
 
-async function createSession(tgUser: TelegramUser, tgChat?: TelegramChat): Promise<SessionData> {
-    const session = {
-        chat: tgChat ? new Chat(tgChat) : undefined,
-        user: new User(tgUser)
-    }
-    await session.user.save()
-    if (session.chat)
-        await session.chat.save()
-    console.log("wtf", session.chat)
-    return session
+function getUser(id: number): Promise<User | null> {
+    return User.findOne({
+        where: { id },
+        relations: {
+            profile: true,
+            chats: true
+        }
+    })
 }
 
-async function updateSession(tgUser: TelegramUser, tgChat?: TelegramChat): Promise<void> {
-    const session = await getSession(tgUser.id, tgChat?.id)
-    if (!session)
-        return
-    const user = new User(tgUser)
-    user.rowid = session.user.rowid
-    session.user = await user.save()
-    if (!session.chat && tgChat) {
-        await new Chat(tgChat).save()
-        return
-    }
-    const chat = new Chat(tgChat)
-    chat.rowid = session.chat!.rowid
-    session.chat = await chat.save()
+function getChat(id: number): Promise<Chat | null> {
+    return Chat.findOne({
+        where: { id },
+        relations: {
+            users: { profile: true }
+        }
+    })
 }

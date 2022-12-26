@@ -1,16 +1,17 @@
-import { Context, /* Filter */ } from "grammy"
+import { Context } from "grammy"
+import { Chat, Message, User } from "grammy/out/types"
 import { I18nFlavor } from "./i18n"
 import { AutoQuoteFlavor } from "./auto-quote"
 import { SessionFlavor } from "./session"
-import { Chat, Message, User } from "grammy/out/types"
 
-type MyBaseContext =
+export type MyContext =
     & Context
     & I18nFlavor
     & AutoQuoteFlavor
     & SessionFlavor
+    & NotNullable
 
-export type MyContext = MyBaseContext & {
+type NotNullable = {
     chat: Chat,
     from: User,
     msg: Message

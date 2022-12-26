@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Chat as TelegramChat } from "grammy/out/types"
+import { User } from "./user"
 
 @Entity()
 export class Chat extends BaseEntity {
@@ -27,4 +28,7 @@ export class Chat extends BaseEntity {
 
     @Column({ unique: true, nullable: true })
     username?: string
+
+    @ManyToMany(() => User, user => user.chats)
+    users: User[]
 }
