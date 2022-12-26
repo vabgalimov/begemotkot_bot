@@ -1,2 +1,46 @@
 command: "!профиль"
 desc: В профиле можно увидеть свой статус, питомца, рейтинг и ранг
+
+templates:
+  default: |-
+    Профиль:
+    Имя: ${name}
+    Статус: ${status}
+    Ранг: ${rank}        ${messages}/${messagesToRankUp} сообщений
+    Монет: ${coins}     Рейтинг: ${rating}
+    Питомец: ${petName}
+    Размер: ${petSize} мм     Сила: ${petPower}
+    Битвы питомца: ${petBattleWins}/${petBattleTotal}
+    Дуэли: ${duelWins}/${duelTotal}
+    Место прописки: ${firstChat}
+  general: |-
+    Профиль:
+    ℹ️ Имя: ${name}
+    🎫 Статус: ${status}
+    🎖 Ранг: ${rank}    📈${messages}/${messagesToRankUp} сообщений📈
+    🪙 Монет: ${coins}    ⭐️ Рейтинг: ${rating}
+    🐾 Питомец: ${petName}
+    🔝 Размер: ${petSize} мм    ⚡️ Сила: ${petPower}
+    🏆 Битвы питомца: ${petBattleWins}/${petBattleTotal}
+    ⚔️ Дуэли: ${duelWins}/${duelTotal}
+    📝 Место прописки: ${firstChat}
+  glamour: |-
+    🌸🌼 Профиль: ${name} 🌼🌸
+    🔥 Статус: ${status} 🔥
+    🌟 Ранг: ${rank}   💌 ${messages}/${messagesToRankUp} сообщений 💌
+    🪙 Монет: ${coins}    ⭐️ Рейтинг: ${rating}
+    🧸 Питомец: ${petName}
+    📊 Размер: ${petSize} мм    ⚡️ Сила: ${petPower}
+    🥇 Битвы питомца: ${petBattleWins}/${petBattleTotal}
+    🏆 Дуэли: ${duelWins}/${duelTotal}
+    🏡 Место прописки: ${firstChat}
+  icons: |-
+    ℹ️ : ${name}
+    🎫 : ${status}
+    🎖 : ${rank}     ✉️${messages}/${messagesToRankUp}✉️
+    🪙 : ${coins}    ⭐️: ${rating}
+    🐾 : ${petName}
+    🔝 : ${petSize}        ⚡️: ${petPower}
+    🏆 : ${petBattleWins}/${petBattleTotal}
+    ⚔️ : ${duelWins}/${duelTotal}
+    📝 : ${firstChat}
