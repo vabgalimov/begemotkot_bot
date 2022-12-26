@@ -46,7 +46,6 @@ async function saveChatUser(chat: Chat | null, user: User | null, tgChat: Telegr
     if (user.chats.every(inChat => inChat.id != chat!.id))
         user.chats.push(chat)
 
-    console.log(chat, user)
     return {
         chat: await chat.save(),
         user: await user.save()
