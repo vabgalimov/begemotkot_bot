@@ -57,6 +57,7 @@ function getUser(id: number): Promise<User | null> {
         where: { id },
         relations: {
             profile: true,
+            pet: true,
             chats: true
         }
     })
@@ -66,7 +67,7 @@ function getChat(id: number): Promise<Chat | null> {
     return Chat.findOne({
         where: { id },
         relations: {
-            users: { profile: true }
+            users: { profile: true, pet: true }
         }
     })
 }

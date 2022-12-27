@@ -2,6 +2,7 @@ import { BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne
 import { User as TelegramUser } from "grammy/out/types"
 import { Profile } from "./profile"
 import { Chat } from "./chat"
+import { Pet } from "./pet"
 
 @Entity()
 export class User extends BaseEntity {
@@ -14,6 +15,7 @@ export class User extends BaseEntity {
         this.username = user.username
         this.language_code = user.language_code ?? "ru"
         this.profile = new Profile(this)
+        this.pet = new Pet(this)
     }
 
     @PrimaryGeneratedColumn()
@@ -34,6 +36,10 @@ export class User extends BaseEntity {
     @OneToOne(() => Profile, profile => profile.user, { cascade: true })
     @JoinColumn()
     profile: Profile
+
+    @OneToOne(() => Pet, pet => pet.owner, { cascade: true })
+    @JoinColumn()
+    pet: Pet
 
     @ManyToMany(() => Chat, chat => chat.users)
     @JoinTable()
