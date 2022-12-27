@@ -4,6 +4,7 @@ import { inspect } from "util"
 
 const commandKeys = [
     "profile",
+    "vip",
 ]
 
 interface CommandDesc {
