@@ -1,10 +1,9 @@
 import { comp } from "./composer"
 import { command } from "filters"
-import { commandDescriptions } from "utils/commands-descs"
+import { helpMenu } from "utils/help-menu"
 
 comp.filter(command("help.command"), async ctx => {
     ctx.autoQuote()
-    const descs = commandDescriptions[ctx.locale] ?? commandDescriptions["ru"]
-    const text = descs.map(desc => `${desc.commands.join(", ")} - ${desc.description}`).join("\n")
+    const text = helpMenu[ctx.session.user.language_code]
     await ctx.reply(text)
 })
