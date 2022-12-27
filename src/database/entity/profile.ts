@@ -8,13 +8,14 @@ export class Profile extends BaseEntity {
         super()
         if (!user)
             return
-        this.vip = 0
+        this.vip = "none"
         this.template = "default"
-        this.messages = 0;
-        this.rating = 0;
-        this.coins = 0;
-        this.duelWins = 0;
-        this.duelTotal = 0;
+        this.messages = 0
+        this.rating = 0
+        this.duelWins = 0
+        this.duelTotal = 0
+        this.coins = 0
+        this.bonusGotDate = 0
         this.user = user
     }
 
@@ -22,7 +23,7 @@ export class Profile extends BaseEntity {
     rowid: number
 
     @Column()
-    vip: number
+    vip: "none" | "min" | "full"
 
     @Column()
     template: string
@@ -47,6 +48,16 @@ export class Profile extends BaseEntity {
 
     @Column()
     coins: number
+
+    @Column()
+    bonusGotDate: number
+
+    /** in minutes */
+    get bonusGot(): number {
+        const ms = Date.now() - this.bonusGotDate
+        console.log(ms, ms / 60_000 | 0)
+        return ms / 60_000 | 0
+    }
 
     @OneToOne(() => User, user => user.profile)
     user: User

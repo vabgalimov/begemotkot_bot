@@ -29,7 +29,7 @@ comp.filter(command("profile.command"), async ctx => {
     await ctx.reply(text)
 })
 
-function getVipStatus(vip: number, t: TFunction): string {
+function getVipStatus(vip: string, t: TFunction): string {
     return t(`vip.statuses.${vip}`)
 }
 
