@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 import { User } from "./user"
+import { ranks } from "consts/rank"
 
 @Entity()
 export class Profile extends BaseEntity {
@@ -28,6 +29,12 @@ export class Profile extends BaseEntity {
 
     @Column()
     messages: number
+
+    get rank(): string {
+        const rank = ranks.findIndex(rank => rank.maxMessages > this.messages)
+        const rankName = `${rank + 1}`
+        return rankName
+    }
 
     @Column()
     rating: number

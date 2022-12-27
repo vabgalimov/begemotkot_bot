@@ -1,5 +1,6 @@
 import { comp } from "./composer"
 import { command } from "filters"
+import { ranks } from "consts/rank"
 
 comp.filter(command("profile.command"), async ctx => {
     ctx.autoQuote()
@@ -9,9 +10,9 @@ comp.filter(command("profile.command"), async ctx => {
     const text = ctx.t(`profile.templates.${profile.template}`, {
         name: user.name,
         status: 'TODO',
-        rank: 'TODO',
+        rank: profile.rank,
         messages: profile.messages,
-        messagesToRankUp: 'TODO',
+        messagesToRankUp: getMessagesToRankUp(profile.messages),
         coins: profile.coins,
         rating: profile.rating,
         petName: pet.name,
@@ -24,6 +25,9 @@ comp.filter(command("profile.command"), async ctx => {
         firstChat: user.chats[0].name
     })
 
-    console.log(ctx.session)
     await ctx.reply(text)
 })
+
+function getMessagesToRankUp(messages: number): number {
+    return ranks.find(rank => rank.maxMessages > messages)!.maxMessages
+}
