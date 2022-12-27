@@ -4,5 +4,7 @@ export const menu = [
     "#help.commands:",
     "$profile",
     "",
-    "$vip"
+    "$vip",
+    "",
+    "$balance",
 ]
