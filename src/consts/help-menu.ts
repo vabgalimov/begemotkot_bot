@@ -6,5 +6,6 @@ export const menu = [
     "",
     "$vip",
     "",
+    "$bonus",
     "$balance",
 ]

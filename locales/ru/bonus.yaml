@@ -1,0 +1,20 @@
+command: "!бонус"
+desc: Получить немного монет 🪙
+
+delay: До бонуса осталось ${hours} ч ${minutes} м
+
+begin-text: |-
+  🪙 Бонус игра 🪙
+
+  Пользователь: ${user}
+  Попыток осталось: ${attempts}
+
+main-text: |-
+  %{bonus.begin-text}
+  Всего получено: ${total} 🪙
+
+field-item-opened: Эта ячейка уже открыта
+
+all-attempts-left: |-
+  Вы получили: ${total} 🪙
+  Ваш баланс: ${coins} 🪙
