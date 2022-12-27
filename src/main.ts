@@ -1,4 +1,5 @@
 import "source-map-support/register"
+import "./extendings"
 
 import { AppDataSource } from "database"
 import { bot } from "bot"
