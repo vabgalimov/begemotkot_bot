@@ -18,6 +18,8 @@ comp.use(async (ctx, next) => {
             return { chat, user }
         }
     }
+    ctx.profile = ctx.session.user.profile
+    ctx.pet = ctx.session.user.pet
     await next()
 })
 
