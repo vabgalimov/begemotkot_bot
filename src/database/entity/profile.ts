@@ -55,7 +55,6 @@ export class Profile extends BaseEntity {
     /** in minutes */
     get bonusGot(): number {
         const ms = Date.now() - this.bonusGotDate
-        console.log(ms, ms / 60_000 | 0)
         return ms / 60_000 | 0
     }
 
