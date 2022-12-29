@@ -18,15 +18,20 @@ for (const lang of i18n.languages) {
                 const replyRequired = el.startsWith("$!")
                 const key = el.slice(+replyRequired + 1)
                 let commands = i18n.getResource(lang, "tr", key + ".command")
-                const desc = i18n.getResource(lang, "tr", key + ".desc")
                 if (typeof commands == "string")
                     commands = [commands]
+                const desc = i18n.getResource(lang, "tr", key + ".desc")
+                const args = i18n.getResource(lang, "tr", key + ".args")
+                let argsText = ""
+                if (args instanceof Array<string>) {
+                    argsText = " " + args.map(a => `[${a}]`).join(" ")
+                }
                 let replyRequiredText = ""
                 if (replyRequired) {
                     const text = i18n.getResource(lang, "tr", "help.reply-required")
                     replyRequiredText = ` (${text})`
                 }
-                text = `${commands.join(", ")}${replyRequiredText} - ${desc}`
+                text = `${commands.join(", ")}${argsText}${replyRequiredText} - ${desc}`
             }
             else {
                 text = el
