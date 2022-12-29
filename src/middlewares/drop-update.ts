@@ -17,6 +17,5 @@ function checkUpdate(ctx: MyContext): boolean {
 comp.use((ctx, next) => {
     if (checkUpdate(ctx))
         return next()
-    console.log(ctx)
     Debug.log(`update ${ctx.update.update_id} was dropped`)
 })
