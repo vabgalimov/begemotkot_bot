@@ -9,4 +9,6 @@ export const menu = [
     "$bonus",
     "$balance",
     "$!transfer",
+    "",
+    "#help.footer"
 ]

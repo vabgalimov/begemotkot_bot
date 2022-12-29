@@ -9,7 +9,7 @@ comp.filter(command("vip.command"), async ctx => {
     const text = ctx.t("vip.text", {
         prices,
         extraCoins,
-        donateUrl: DONATE_URL
+        DONATE_URL
     })
     await ctx.reply(text)
 })

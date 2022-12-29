@@ -1,9 +1,11 @@
 import { i18n } from "utils/i18n";
 import { menu as rawMenu } from "consts/help-menu"
+import { env } from "env"
 
 export const helpMenu: Record<string, string> = {}
 
 for (const lang of i18n.languages) {
+    const t = i18n.getFixedT(lang, "tr")
     const menu: string[] = []
     for (const line of rawMenu) {
         const buf = []
@@ -12,24 +14,24 @@ for (const lang of i18n.languages) {
             let text: string
             if (el.startsWith("#")) {
                 const key = el.slice(1)
-                text = i18n.getResource(lang, "tr", key)
+                text = t(key, env)
             }
             else if (el.startsWith("$")) {
                 const replyRequired = el.startsWith("$!")
                 const key = el.slice(+replyRequired + 1)
-                let commands = i18n.getResource(lang, "tr", key + ".command")
-                if (typeof commands == "string")
+                let commands = t(key + ".command", { returnObjects: true }) as string | string[]
+                if (typeof commands == "string") {
                     commands = [commands]
-                const desc = i18n.getResource(lang, "tr", key + ".desc")
-                const args = i18n.getResource(lang, "tr", key + ".args")
+                }
+                const desc = t(key + ".desc")
+                const args = t(key + ".args", { returnObjects: true })
                 let argsText = ""
                 if (args instanceof Array<string>) {
-                    argsText = " " + args.map(a => `[${a}]`).join(" ")
+                    argsText = args.map(a => ` [${a}]`).join("")
                 }
                 let replyRequiredText = ""
                 if (replyRequired) {
-                    const text = i18n.getResource(lang, "tr", "help.reply-required")
-                    replyRequiredText = ` (${text})`
+                    replyRequiredText = ` (${t("help.reply-required")})`
                 }
                 text = `${commands.join(", ")}${argsText}${replyRequiredText} - ${desc}`
             }
