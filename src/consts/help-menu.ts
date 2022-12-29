@@ -8,4 +8,5 @@ export const menu = [
     "",
     "$bonus",
     "$balance",
+    "$!transfer",
 ]
