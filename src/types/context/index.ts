@@ -15,6 +15,5 @@ export type MyContext =
 
 type NotNullable = {
     chat: Chat,
-    from: User,
-    msg: Message
+    from: User
 }
