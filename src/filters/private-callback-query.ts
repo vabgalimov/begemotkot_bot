@@ -1,13 +1,15 @@
 import { MyContext } from "types/context"
 import { CallbackQuery } from "grammy/out/types.node"
 
-type FilteredContext = MyContext & {
-    callbackQuery: CallbackQuery
+type FilteredContext<C> = C & {
+    callbackQuery: CallbackQuery & {
+        data: string
+    }
     match: RegExpMatchArray
 }
 
 export function privateCallbackQuery(data: string | RegExp, userId?: number) {
-    return (ctx: MyContext): ctx is FilteredContext => {
+    return <C extends MyContext>(ctx: C): ctx is FilteredContext<C> => {
         if (!ctx.callbackQuery?.data?.includes(":"))
             return false
 

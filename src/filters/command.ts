@@ -1,5 +1,11 @@
 import { i18n } from "utils/i18n"
 import { MyContext } from "types/context"
+import { Message } from "grammy/out/types"
+
+type FilteredContext<C> = C & {
+    message: Message
+    match: RegExpMatchArray
+}
 
 export function command(key: string, testArgs?: RegExp, ignoreCase = false) {
     const reFlags = ignoreCase ? "i" : undefined
@@ -12,7 +18,7 @@ export function command(key: string, testArgs?: RegExp, ignoreCase = false) {
         }
     }
 
-    return (ctx: MyContext): boolean => {
+    return <C extends MyContext>(ctx: C): ctx is FilteredContext<C> => {
         const text = ctx.message?.text
         if (!text) return false
         return commands.some(command => {
