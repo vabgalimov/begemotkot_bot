@@ -2,6 +2,7 @@ export { comp as middlewares } from "./composer"
 
 import "./drop-update"
 import "./sequentialize"
+import "./api-throttler"
 import "./auto-quote"
 import "./privatize-callback-query"
 import "./session"
