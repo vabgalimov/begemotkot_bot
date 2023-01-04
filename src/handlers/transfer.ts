@@ -17,7 +17,7 @@ comp.filter(reply()).filter(command("transfer.command", /(\d+)/), async ctx => {
 
     const amount = +ctx.match[1]
     if (ctx.profile.coins < amount) {
-        const text = ctx.t("transfer.no-money", { coins: ctx.profile.coins })
+        const text = ctx.t("transfer.no-coins", { coins: ctx.profile.coins })
         await ctx.reply(text)
         return
     }
