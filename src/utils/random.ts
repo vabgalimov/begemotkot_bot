@@ -19,6 +19,15 @@ export class Random {
         return Math.trunc(this.float(start, end))
     }
 
+    /**
+      * Get a random int in range [start..end]
+      * when only start, then random int in range [0..start]
+      */
+    static inti(start: number, end?: number): number {
+        end ? end++ : start++
+        return this.int(start, end)
+    }
+
     /** Get a random item in iterable object */
     static choice<T>(it: Iterable<T>): T {
         const arr = it instanceof Array<T> ? it as T[] : Array.from(it)
