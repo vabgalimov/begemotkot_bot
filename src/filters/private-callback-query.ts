@@ -1,11 +1,13 @@
 import { MyContext } from "types/context"
-import { CallbackQuery } from "grammy/out/types.node"
+import { CallbackQuery, Message } from "grammy/out/types"
 
 type FilteredContext<C> = C & {
     callbackQuery: CallbackQuery & {
-        data: string
+        data: string,
+        message: Message
     }
     match: RegExpMatchArray
+    msg: Message
 }
 
 export function privateCallbackQuery(data: string | RegExp, userId?: number) {
