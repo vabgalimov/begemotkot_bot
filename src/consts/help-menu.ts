@@ -10,5 +10,8 @@ export const menu = [
     "$balance",
     "$!transfer",
     "",
+    "$pet-menu",
+    "$pet-nickname",
+    "",
     "#help.footer"
 ]
