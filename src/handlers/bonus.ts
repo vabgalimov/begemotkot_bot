@@ -8,7 +8,7 @@ const states: {
         attempts: number
         total: number
         items: (keyof typeof prices)[][]
-        opened: true[][]
+        opened: [number, number][]
     } | undefined
 } = {}
 
@@ -54,15 +54,14 @@ comp.filter(privateCallbackQuery(/^bonus-item-(\d+)-(\d+)$/), async ctx => {
     const y = +ctx.match[1]
     const x = +ctx.match[2]
 
-    if (state.opened[y] && state.opened[y][x]) {
+    if (state.opened.some(([oy, ox]) => oy == y && ox == x)) {
         const text = ctx.t("bonus.field-item-opened")
         await ctx.answerCallbackQuery(text)
         return
     }
     await ctx.answerCallbackQuery()
 
-    state.opened[y] ??= []
-    state.opened[y][x] = true
+    state.opened.push([y, x])
     state.attempts--
 
     const item = state.items[y][x]
@@ -81,7 +80,8 @@ comp.filter(privateCallbackQuery(/^bonus-item-(\d+)-(\d+)$/), async ctx => {
     }
 
     const { inline_keyboard } = ctx.callbackQuery.message!.reply_markup!
-    inline_keyboard[y][x].text = item
+    for (const [y, x] of state.opened)
+        inline_keyboard[y][x].text = state.items[y][x]
     const text = ctx.t("bonus.main-text", {
         user: ctx.session.user.name,
         attempts: state.attempts,
